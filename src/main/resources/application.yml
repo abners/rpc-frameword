@@ -1,3 +1,5 @@
 rpc:
   server:
     address: 127.0.0.1:20980
+  registry:
+    server: 39.99.44.107:2189

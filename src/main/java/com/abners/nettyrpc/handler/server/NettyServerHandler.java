@@ -1,4 +1,4 @@
-package com.abners.nettyrpc.handler;
+package com.abners.nettyrpc.handler.server;
 
 import java.lang.reflect.Method;
 import java.util.Map;
@@ -17,7 +17,7 @@ import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
 
 /**
- * 类NettyServerHandler.java的实现描述：TODO 类实现描述
+ * 类NettyServerHandler.java的实现描述：netty server 处理器，接收RPC客户端请求
  *
  * @author baoxing.peng 2021年02月24日 18:31:11
  */

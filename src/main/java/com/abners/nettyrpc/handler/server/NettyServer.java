@@ -1,4 +1,4 @@
-package com.abners.nettyrpc.handler;
+package com.abners.nettyrpc.handler.server;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Component;
 import com.abners.nettyrpc.common.RpcService;
 import com.abners.nettyrpc.common.coder.JSONDecoder;
 import com.abners.nettyrpc.common.coder.JSONEncoder;
+import com.abners.nettyrpc.registry.ZookeeperRegistry;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -41,7 +43,9 @@ public class NettyServer implements ApplicationContextAware, InitializingBean {
     private              Map<String, Object> serviceMap  = new HashMap<>();
 
     @Value("${rpc.server.address}")
-    private String serverAddress;
+    private String            serverAddress;
+    @Autowired
+    private ZookeeperRegistry zookeeperRegistry;
 
     @Override
     public void afterPropertiesSet() throws Exception {
@@ -70,6 +74,7 @@ public class NettyServer implements ApplicationContextAware, InitializingBean {
                 String host = array[0];
                 int port = Integer.parseInt(array[1]);
                 ChannelFuture cf = bootstrap.bind(host, port).sync();
+                zookeeperRegistry.registry(serverAddress);
                 logger.info("rpc service start complete");
                 cf.channel().closeFuture().sync();
             } catch (Exception e) {

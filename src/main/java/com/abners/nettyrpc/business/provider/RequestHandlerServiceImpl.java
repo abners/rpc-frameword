@@ -16,6 +16,6 @@ public class RequestHandlerServiceImpl implements RequestHandlerService {
     @Override
     public String sendReq(String param) {
         log.info("receive req:{}", param);
-        return "abs";
+        return param;
     }
 }

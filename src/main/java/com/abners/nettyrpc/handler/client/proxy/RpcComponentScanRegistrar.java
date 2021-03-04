@@ -11,7 +11,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.type.AnnotationMetadata;
-import org.springframework.stereotype.Component;
 import org.springframework.util.ClassUtils;
 
 /**
@@ -19,7 +18,7 @@ import org.springframework.util.ClassUtils;
  *
  * @author baoxing.peng 2021年03月03日 16:43:51
  */
-@Component
+//@Component
 public class RpcComponentScanRegistrar implements ImportBeanDefinitionRegistrar {
 
     @Override

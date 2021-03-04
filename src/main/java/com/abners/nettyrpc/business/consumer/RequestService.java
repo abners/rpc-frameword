@@ -7,4 +7,5 @@ package com.abners.nettyrpc.business.consumer;
  */
 public interface RequestService {
 
+    void sendAReuest();
 }

@@ -7,4 +7,5 @@ package com.abners.nettyrpc.business.provider;
  */
 public interface RequestHandlerService {
 
+    String sendReq(String jsdifsdf);
 }

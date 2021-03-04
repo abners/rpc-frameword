@@ -40,8 +40,11 @@ public class ConnectManage {
     }
 
     public synchronized void updateConnectServer(List<String> addressList) {
+        if (addressList == null || addressList.size() == 0) {
+            return;
+        }
         if (addressList.size() == 0 || addressList == null) {
-            logger.error("没有可用的服务器节点, 全部服务节点已关闭!");
+            logger.warn("没有可用的服务器节点, 全部服务节点已关闭!");
             for (final Channel channel : channels) {
                 SocketAddress remotePeer = channel.remoteAddress();
                 Channel handler_node = channelNodes.get(remotePeer);

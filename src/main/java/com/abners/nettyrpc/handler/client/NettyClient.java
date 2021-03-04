@@ -6,6 +6,7 @@ import java.util.concurrent.SynchronousQueue;
 import javax.annotation.PreDestroy;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import com.abners.nettyrpc.common.coder.JSONDecoder;
@@ -34,6 +35,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Component
 @Slf4j
+@Order(2)
 public class NettyClient {
 
     private NioEventLoopGroup group     = new NioEventLoopGroup(1);

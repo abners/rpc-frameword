@@ -1,6 +1,7 @@
 package com.abners.nettyrpc.handler.server;
 
 import java.lang.reflect.Method;
+import java.util.Collection;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -9,6 +10,8 @@ import org.slf4j.LoggerFactory;
 import com.abners.nettyrpc.common.model.Request;
 import com.abners.nettyrpc.common.model.Response;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -39,7 +42,7 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         Request request = JSON.parseObject(msg.toString(), Request.class);
-        if (request.getMethodName().equals("heartBeart")) {
+        if (request.getMethodName().equals("heartBeat")) {
             logger.info("client heart beat,ip:{}", ctx.channel().remoteAddress());
         } else {
             logger.info("recive client request,requestId:{},className:{},methodName:{}", request.getId(),
@@ -49,6 +52,7 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
             try {
                 Object result = this.handler(request);
                 response.setData(result);
+                response.setResultCode(1);
             } catch (Exception e) {
                 response.setErrorMsg(e.getMessage());
                 response.setResultCode(500);
@@ -96,7 +100,16 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
         }
         Object[] objects = new Object[parameters.length];
         for (int i = 0; i < parameters.length; i++) {
-            objects[i] = JSON.parseObject(parameters[i].toString(), parameterTypes[i]);
+            if (parameterTypes[i].isPrimitive() || String.class.isAssignableFrom(parameterTypes[i])) {
+                objects[i] = parameters[i];
+
+            } else if (Collection.class.isAssignableFrom(parameterTypes[i])) {
+                objects[i] = JSONArray.parseArray(parameters[i].toString(), parameterTypes[i]);
+            } else if (Map.class.isAssignableFrom(parameterTypes[i])) {
+                objects[i] = JSON.parseObject(parameters[i].toString(), Map.class);
+            } else {
+                objects[i] = JSONObject.parseObject(parameters[i].toString(), parameterTypes[i]);
+            }
         }
         return objects;
     }

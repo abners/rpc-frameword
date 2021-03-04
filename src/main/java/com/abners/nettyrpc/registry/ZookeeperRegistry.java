@@ -33,5 +33,6 @@ public class ZookeeperRegistry implements Registry {
         String path = zkClient.create(REGISTRY_ROOT_PATH + "/provider", dataPath, ZooDefs.Ids.OPEN_ACL_UNSAFE,
                                       CreateMode.EPHEMERAL_SEQUENTIAL);
         log.info("export service success,path:{}=>{}", path, dataPath);
+        zkClient.watchForData(path);
     }
 }

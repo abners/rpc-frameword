@@ -17,4 +17,5 @@ import org.springframework.stereotype.Component;
 @Target(ElementType.TYPE)
 public @interface RpcService {
 
+    String value() default "";
 }
